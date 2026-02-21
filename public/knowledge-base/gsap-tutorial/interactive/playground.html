@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GSAP 交互式演示平台</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #1a1a2e;
+      color: #eee;
+      min-height: 100vh;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .header h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    
+    .header p {
+      opacity: 0.8;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .playground {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    @media (max-width: 900px) {
+      .playground {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .preview-area {
+      background: #16213e;
+      border-radius: 12px;
+      padding: 20px;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .preview-title {
+      font-size: 14px;
+      color: #888;
+    }
+    
+    .preview-box {
+      flex: 1;
+      background: #0f0f23;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .demo-element {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+    }
+    
+    .code-area {
+      background: #16213e;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .code-title {
+      font-size: 14px;
+      color: #888;
+    }
+    
+    .code-editor {
+      flex: 1;
+      background: #0f0f23;
+      border-radius: 8px;
+      padding: 15px;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #a6e22e;
+      resize: none;
+      border: none;
+      outline: none;
+      min-height: 300px;
+    }
+    
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-secondary {
+      background: #2d3748;
+      color: #fff;
+    }
+    
+    .btn-secondary:hover {
+      background: #3d4a5c;
+    }
+    
+    .examples {
+      margin-top: 30px;
+    }
+    
+    .examples-title {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #fff;
+    }
+    
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+    }
+    
+    .example-card {
+      background: #16213e;
+      border-radius: 8px;
+      padding: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+    
+    .example-card:hover {
+      border-color: #667eea;
+      transform: translateY(-2px);
+    }
+    
+    .example-card h3 {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+    
+    .example-card p {
+      font-size: 12px;
+      color: #888;
+    }
+    
+    .console {
+      background: #0f0f23;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 15px;
+      font-family: monospace;
+      font-size: 12px;
+      max-height: 100px;
+      overflow-y: auto;
+    }
+    
+    .console-line {
+      margin: 5px 0;
+      color: #888;
+    }
+    
+    .console-line.error {
+      color: #f56565;
+    }
+    
+    .console-line.success {
+      color: #68d391;
+    }
+    
+    .tabs {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 15px;
+    }
+    
+    .tab {
+      padding: 8px 16px;
+      background: #2d3748;
+      border: none;
+      border-radius: 6px 6px 0 0;
+      color: #888;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    
+    .tab.active {
+      background: #0f0f23;
+      color: #fff;
+    }
+    
+    .progress-section {
+      margin-top: 30px;
+      background: #16213e;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    
+    .progress-title {
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+    
+    .progress-bar-container {
+      background: #2d3748;
+      border-radius: 10px;
+      height: 10px;
+      overflow: hidden;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      width: 0%;
+      transition: width 0.3s;
+    }
+    
+    .progress-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #888;
+    }
+    
+    .chapter-progress {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .chapter-item {
+      background: #2d3748;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 12px;
+    }
+    
+    .chapter-item.completed {
+      background: #2d4a3e;
+      border-left: 3px solid #68d391;
+    }
+    
+    .chapter-item.current {
+      background: #3d3a4a;
+      border-left: 3px solid #667eea;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>GSAP 交互式演示平台</h1>
+    <p>编辑代码，实时预览动画效果</p>
+  </header>
+  
+  <div class="container">
+    <div class="playground">
+      <div class="preview-area">
+        <div class="preview-header">
+          <span class="preview-title">预览区域</span>
+          <button class="btn btn-secondary" onclick="resetPreview()">重置</button>
+        </div>
+        <div class="preview-box" id="preview-box">
+          <div class="demo-element" id="demo-element">GSAP</div>
+        </div>
+        <div class="console" id="console">
+          <div class="console-line">准备就绪，点击"运行代码"开始</div>
+        </div>
+      </div>
+      
+      <div class="code-area">
+        <div class="code-header">
+          <span class="code-title">代码编辑器</span>
+        </div>
+        <textarea class="code-editor" id="code-editor" spellcheck="false">gsap.to("#demo-element", {
+  x: 150,
+  rotation: 360,
+  scale: 1.2,
+  backgroundColor: "#e74c3c",
+  borderRadius: "50%",
+  duration: 1,
+  ease: "power2.out"
+});</textarea>
+        <div class="controls">
+          <button class="btn btn-primary" onclick="runCode()">▶ 运行代码</button>
+          <button class="btn btn-secondary" onclick="clearConsole()">清空控制台</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="examples">
+      <h2 class="examples-title">快速示例</h2>
+      <div class="examples-grid">
+        <div class="example-card" onclick="loadExample('fadeIn')">
+          <h3>淡入效果</h3>
+          <p>元素从透明渐变到可见</p>
+        </div>
+        <div class="example-card" onclick="loadExample('slideIn')">
+          <h3>滑入效果</h3>
+          <p>元素从左侧滑入</p>
+        </div>
+        <div class="example-card" onclick="loadExample('bounce')">
+          <h3>弹跳效果</h3>
+          <p>元素弹跳落下</p>
+        </div>
+        <div class="example-card" onclick="loadExample('rotate')">
+          <h3>旋转效果</h3>
+          <p>元素360度旋转</p>
+        </div>
+        <div class="example-card" onclick="loadExample('pulse')">
+          <h3>脉冲效果</h3>
+          <p>元素持续放大缩小</p>
+        </div>
+        <div class="example-card" onclick="loadExample('shake')">
+          <h3>摇晃效果</h3>
+          <p>元素左右摇晃</p>
+        </div>
+        <div class="example-card" onclick="loadExample('flip')">
+          <h3>翻转效果</h3>
+          <p>3D翻转动画</p>
+        </div>
+        <div class="example-card" onclick="loadExample('timeline')">
+          <h3>时间线动画</h3>
+          <p>序列动画演示</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="progress-section">
+      <h2 class="progress-title">学习进度</h2>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <div class="progress-stats">
+        <span>已完成: <span id="completed-count">0</span> / 16 章</span>
+        <span id="progress-percent">0%</span>
+      </div>
+      <div class="chapter-progress" id="chapter-progress"></div>
+    </div>
+  </div>
+  
+  <script>
+    gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+    
+    const codeEditor = document.getElementById('code-editor');
+    const consoleEl = document.getElementById('console');
+    const progressBar = document.getElementById('progress-bar');
+    const completedCount = document.getElementById('completed-count');
+    const progressPercent = document.getElementById('progress-percent');
+    const chapterProgress = document.getElementById('chapter-progress');
+    
+    const chapters = [
+      { id: 1, name: 'GSAP是什么', completed: false },
+      { id: 2, name: '安装与配置', completed: false },
+      { id: 3, name: '基础Tween动画', completed: false },
+      { id: 4, name: '动画属性详解', completed: false },
+      { id: 5, name: 'GSAP核心方法', completed: false },
+      { id: 6, name: '时间线基础', completed: false },
+      { id: 7, name: '时间线控制', completed: false },
+      { id: 8, name: '缓动函数', completed: false },
+      { id: 9, name: '交错动画', completed: false },
+      { id: 10, name: '回调与事件', completed: false },
+      { id: 11, name: 'SVG动画', completed: false },
+      { id: 12, name: '3D变换', completed: false },
+      { id: 13, name: 'ScrollTrigger基础', completed: false },
+      { id: 14, name: 'ScrollTrigger进阶', completed: false },
+      { id: 15, name: '响应式动画', completed: false },
+      { id: 16, name: '性能优化', completed: false }
+    ];
+    
+    function loadProgress() {
+      const saved = localStorage.getItem('gsap-progress');
+      if (saved) {
+        const savedChapters = JSON.parse(saved);
+        savedChapters.forEach((s, i) => {
+          if (chapters[i]) chapters[i].completed = s.completed;
+        });
+      }
+      updateProgressUI();
+    }
+    
+    function saveProgress() {
+      localStorage.setItem('gsap-progress', JSON.stringify(chapters));
+    }
+    
+    function updateProgressUI() {
+      const completed = chapters.filter(c => c.completed).length;
+      const percent = Math.round((completed / chapters.length) * 100);
+      
+      progressBar.style.width = percent + '%';
+      completedCount.textContent = completed;
+      progressPercent.textContent = percent + '%';
+      
+      chapterProgress.innerHTML = chapters.map(c => `
+        <div class="chapter-item ${c.completed ? 'completed' : ''}" 
+             onclick="toggleChapter(${c.id})">
+          第${c.id}章: ${c.name}
+          ${c.completed ? ' ✓' : ''}
+        </div>
+      `).join('');
+    }
+    
+    function toggleChapter(id) {
+      const chapter = chapters.find(c => c.id === id);
+      if (chapter) {
+        chapter.completed = !chapter.completed;
+        saveProgress();
+        updateProgressUI();
+      }
+    }
+    
+    function log(message, type = 'info') {
+      const line = document.createElement('div');
+      line.className = 'console-line ' + type;
+      line.textContent = `> ${message}`;
+      consoleEl.appendChild(line);
+      consoleEl.scrollTop = consoleEl.scrollHeight;
+    }
+    
+    function clearConsole() {
+      consoleEl.innerHTML = '';
+    }
+    
+    function resetPreview() {
+      gsap.killTweensOf("#demo-element");
+      gsap.set("#demo-element", {
+        clearProps: "all"
+      });
+      log('预览已重置', 'success');
+    }
+    
+    function runCode() {
+      const code = codeEditor.value;
+      clearConsole();
+      log('执行代码...');
+      
+      try {
+        resetPreview();
+        eval(code);
+        log('代码执行成功!', 'success');
+      } catch (error) {
+        log('错误: ' + error.message, 'error');
+      }
+    }
+    
+    const examples = {
+      fadeIn: `gsap.from("#demo-element", {
+  opacity: 0,
+  y: 30,
+  duration: 0.8,
+  ease: "power2.out"
+});`,
+      slideIn: `gsap.from("#demo-element", {
+  x: -200,
+  opacity: 0,
+  duration: 0.8,
+  ease: "power3.out"
+});`,
+      bounce: `gsap.from("#demo-element", {
+  y: -200,
+  duration: 1.5,
+  ease: "bounce.out"
+});`,
+      rotate: `gsap.to("#demo-element", {
+  rotation: 360,
+  duration: 1,
+  ease: "power2.inOut"
+});`,
+      pulse: `gsap.to("#demo-element", {
+  scale: 1.2,
+  duration: 0.5,
+  repeat: -1,
+  yoyo: true,
+  ease: "power1.inOut"
+});`,
+      shake: `gsap.to("#demo-element", {
+  x: 20,
+  duration: 0.1,
+  repeat: 7,
+  yoyo: true,
+  ease: "none"
+});`,
+      flip: `gsap.to("#demo-element", {
+  rotationY: 180,
+  duration: 0.8,
+  ease: "power2.inOut"
+});`,
+      timeline: `const tl = gsap.timeline();
+
+tl.to("#demo-element", { x: 100, duration: 0.5 })
+  .to("#demo-element", { y: 50, duration: 0.5 })
+  .to("#demo-element", { rotation: 360, duration: 0.5 })
+  .to("#demo-element", { scale: 1.2, duration: 0.3 });`
+    };
+    
+    function loadExample(name) {
+      if (examples[name]) {
+        codeEditor.value = examples[name];
+        log(`已加载示例: ${name}`, 'success');
+      }
+    }
+    
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        runCode();
+      }
+    });
+    
+    loadProgress();
+  </script>
+</body>
+</html>

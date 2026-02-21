@@ -1,0 +1,12 @@
+{
+  "name": "mind-archive",
+  "version": "1.0.0",
+  "description": "个人学习知识库 - 系统化管理学习资料",
+  "scripts": {
+    "start": "npx serve . -p 8080",
+    "dev": "npx live-server . --port=8080"
+  },
+  "keywords": ["learning", "knowledge-base", "markdown", "docs"],
+  "author": "",
+  "license": "MIT"
+}
