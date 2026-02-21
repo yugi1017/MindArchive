@@ -8,6 +8,12 @@ const LearningSystem = {
     expandedChapters: new Set(),
     tocScrollObserver: null,
     
+    normalizePath(path) {
+        if (path.startsWith('./')) return path;
+        if (path.startsWith('/')) return '.' + path;
+        return './' + path;
+    },
+    
     async init() {
         await this.loadData();
         this.renderHomePage();
@@ -33,7 +39,7 @@ const LearningSystem = {
         
         const loadPromises = this.searchIndex.slice(0, 30).map(async (item) => {
             try {
-                const response = await fetch(item.path);
+                const response = await fetch(this.normalizePath(item.path));
                 if (response.ok) {
                     const content = await response.text();
                     // 提取文档中的关键内容（前1000字符和标题）
@@ -345,7 +351,7 @@ const LearningSystem = {
         this.closeSidebar();
         
         try {
-            const response = await fetch(path);
+            const response = await fetch(this.normalizePath(path));
             if (!response.ok) throw new Error('Document not found');
             const markdown = await response.text();
             this.renderDocument(markdown, id, searchQuery);
