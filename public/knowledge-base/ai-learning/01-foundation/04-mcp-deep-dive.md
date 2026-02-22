@@ -6,7 +6,7 @@
 
 ### 1.1 一句话讲透MCP
 
-把AI模型（如GPT、Claude）比作"聪明的大脑"，AI应用（如ChatGPT、Claude Desktop）是"大脑的嘴巴和耳朵"，API是"脑机接口"，而**MCP就是给这个"大脑"装上的"万能插座"**，让大脑能轻松连接外部所有工具、数据源，直接帮我们完成具体任务，而不只是"回答问题"。
+把AI模型（如GPT、Claude）比作"聪明的大脑"，AI应用（如ChatGPT、Claude Cowork）是"大脑的嘴巴和耳朵"，API是"脑机接口"，而**MCP就是给这个"大脑"装上的"万能插座"**，让大脑能轻松连接外部所有工具、数据源，直接帮我们完成具体任务，而不只是"回答问题"。
 
 ### 1.2 为什么需要MCP
 
@@ -45,7 +45,7 @@ AI：[通过MCP连接文件系统] → 自动分类、命名、汇总
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
 │  ┌──────────────┐                                           │
-│  │    Host      │  ← AI应用（如Claude Desktop、Cursor）     │
+│  │    Host      │  ← AI应用（如Claude Cowork、Cursor）     │
 │  │  (宿主应用)   │                                           │
 │  └──────┬───────┘                                           │
 │         │                                                    │
@@ -77,7 +77,7 @@ AI：[通过MCP连接文件系统] → 自动分类、命名、汇总
 ```
 1. 用户提问："帮我查看这个项目的GitHub Issues"
                     ↓
-2. Host（Claude Desktop）接收问题
+2. Host（Claude Cowork）接收问题
                     ↓
 3. Client识别需要GitHub数据
                     ↓
@@ -282,7 +282,7 @@ pipx install mcp-server-name
 
 **方式二：配置文件**
 
-在Claude Desktop配置文件中添加：
+在Claude Cowork配置文件中添加：
 ```json
 {
   "mcpServers": {
@@ -312,7 +312,7 @@ pipx install mcp-server-name
 ### 4.3 验证安装
 
 ```
-在Claude Desktop中问：
+在Claude Cowork中问：
 "你有哪些MCP工具可以使用？"
 
 AI会列出所有已安装的MCP工具

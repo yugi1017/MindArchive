@@ -333,9 +333,11 @@
 | 适合人群 | 字节生态开发者 |
 
 **特点**：
-- 云端IDE
-- VS Code/JetBrains插件
+- 云端IDE（已于2026年4月停止运营）
+- VS Code/JetBrains插件（仍可正常使用）
 - 字节生态适配好
+
+**注意**：MarsCode云端IDE已停止运营，但插件功能仍可正常使用。推荐使用Trae作为替代。
 
 #### 百度Comate
 
