@@ -385,7 +385,7 @@ const LearningSystem = {
         this.processInternalLinks();
         this.processAnchorLinks();
         this.initInteractiveDemos();
-        this.addNextPageButton(id);
+        this.addNavigationButtons(id);
         
         if (searchQuery) {
             setTimeout(() => {
@@ -394,7 +394,7 @@ const LearningSystem = {
         }
     },
     
-    addNextPageButton(currentDocId) {
+    addNavigationButtons(currentDocId) {
         const contentBody = document.getElementById('contentBody');
         const articleContent = contentBody.querySelector('.article-content');
         
@@ -419,6 +419,21 @@ const LearningSystem = {
         
         if (currentChapterIndex === -1 || currentItemIndex === -1) return;
         
+        // 找到上一个文档
+        let prevItem = null;
+        
+        // 先在当前章节找上一个文档
+        if (currentItemIndex > 0) {
+            prevItem = book.chapters[currentChapterIndex].items[currentItemIndex - 1];
+        } 
+        // 如果是当前章节第一个文档，找上一个章节的最后一个文档
+        else if (currentChapterIndex > 0) {
+            const prevChapter = book.chapters[currentChapterIndex - 1];
+            if (prevChapter.items.length > 0) {
+                prevItem = prevChapter.items[prevChapter.items.length - 1];
+            }
+        }
+        
         // 找到下一个文档
         let nextItem = null;
         
@@ -434,21 +449,40 @@ const LearningSystem = {
             }
         }
         
-        // 如果找到下一个文档，添加下一页按钮
-        if (nextItem) {
-            const nextPageButton = document.createElement('div');
-            nextPageButton.className = 'next-page-button';
-            nextPageButton.innerHTML = `
-                <button class="next-page-btn" data-id="${nextItem.id}" data-path="${nextItem.path}">
-                    下一页：${nextItem.title}
-                </button>
-            `;
-            articleContent.appendChild(nextPageButton);
+        // 如果找到上一页或下一页，添加导航按钮
+        if (prevItem || nextItem) {
+            const navButtons = document.createElement('div');
+            navButtons.className = 'navigation-buttons';
+            
+            const buttons = [];
+            
+            if (prevItem) {
+                buttons.push(`
+                    <button class="nav-btn prev-page-btn" data-id="${prevItem.id}" data-path="${prevItem.path}">
+                        <span class="nav-arrow">←</span>
+                        <span class="nav-text">上一页：${prevItem.title}</span>
+                    </button>
+                `);
+            }
+            
+            if (nextItem) {
+                buttons.push(`
+                    <button class="nav-btn next-page-btn" data-id="${nextItem.id}" data-path="${nextItem.path}">
+                        <span class="nav-text">下一页：${nextItem.title}</span>
+                        <span class="nav-arrow">→</span>
+                    </button>
+                `);
+            }
+            
+            navButtons.innerHTML = buttons.join('');
+            articleContent.appendChild(navButtons);
             
             // 添加点击事件
-            nextPageButton.querySelector('.next-page-btn').addEventListener('click', (e) => {
-                const target = e.target;
-                this.loadDocument(target.dataset.id, target.dataset.path);
+            navButtons.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const target = e.target.closest('.nav-btn');
+                    this.loadDocument(target.dataset.id, target.dataset.path);
+                });
             });
         }
     },
