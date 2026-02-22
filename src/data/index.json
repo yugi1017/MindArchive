@@ -141,35 +141,43 @@
               "tags": ["编程工具", "Claude Code", "Cursor", "Trae", "Qoder", "Windsurf", "智能体编程"],
               "learningObjectives": ["了解国内外AI编程工具", "理解智能体编程模式", "学会选择适合的工具"]
             },
-            {
+{
               "id": "ai-agent-mcp",
               "title": "第9章 AI智能体、MCP与Skills",
-              "description": "Agent智能体原理、MCP协议详解、Skills技能系统。重点讲解Skills如何让非开发者也能使用AI工具（产品、设计、测试专用Skills案例），以及桌面端Agent（OpenClaw/Clawbot）的兴起",
+              "description": "Agent智能体原理、MCP协议详解、Skills技能系统，理解AI的\"大脑、能力、连接\"三层架构",
               "path": "./public/knowledge-base/ai-application/03-using-tools/02-ai-agent-mcp.md",
-              "tags": ["Agent", "MCP", "Skills", "智能体", "扣子", "Coze", "Dify", "OpenClaw", "Clawbot"],
-              "learningObjectives": ["理解Agent智能体概念", "掌握MCP协议原理", "学会使用和配置Skills", "了解非开发者专用Skills", "了解桌面端Agent趋势"]
+              "tags": ["Agent", "MCP", "Skills", "智能体", "扣子", "Coze", "Dify"],
+              "learningObjectives": ["理解Agent智能体概念", "掌握MCP协议原理", "学会使用和配置Skills"]
+            },
+            {
+              "id": "desktop-ai-agent",
+              "title": "第10章 桌面端AI Agent",
+              "description": "能直接操作电脑的AI助手：从\"对话工具\"进化为\"电脑操作员\"，OpenClaw等桌面端Agent介绍与部署",
+              "path": "./public/knowledge-base/ai-application/03-using-tools/03-desktop-ai-agent.md",
+              "tags": ["桌面端Agent", "OpenClaw", "AI员工", "电脑操作"],
+              "learningObjectives": ["理解桌面端Agent概念", "区分对话式AI与桌面端Agent", "了解OpenClaw部署方案"]
             },
             {
               "id": "ai-design-tools",
-              "title": "第10章 AI设计工具",
+              "title": "第11章 AI设计工具",
               "description": "2026年热门AI设计工具：图像生成、UI设计、视频创作等工具介绍",
-              "path": "./public/knowledge-base/ai-application/03-using-tools/03-ai-design-tools.md",
+              "path": "./public/knowledge-base/ai-application/03-using-tools/04-ai-design-tools.md",
               "tags": ["设计工具", "AI生图", "UI设计", "视频创作"],
               "learningObjectives": ["了解AI设计工具生态", "掌握主流设计工具使用", "提升设计效率"]
             },
             {
               "id": "ai-testing-tools",
-              "title": "第11章 AI测试工具",
+              "title": "第12章 AI测试工具",
               "description": "AI辅助软件测试：自动化测试、智能用例生成、缺陷预测等工具和方法",
-              "path": "./public/knowledge-base/ai-application/03-using-tools/04-ai-testing-tools.md",
+              "path": "./public/knowledge-base/ai-application/03-using-tools/05-ai-testing-tools.md",
               "tags": ["测试工具", "自动化测试", "用例生成"],
               "learningObjectives": ["了解AI测试工具", "掌握AI辅助测试方法", "提升测试效率"]
             },
             {
               "id": "tools-comparison",
-              "title": "第12章 工具选型指南",
+              "title": "第13章 工具选型指南",
               "description": "各场景工具对比、选型建议、最佳实践组合",
-              "path": "./public/knowledge-base/ai-application/03-using-tools/05-tools-comparison.md",
+              "path": "./public/knowledge-base/ai-application/03-using-tools/06-tools-comparison.md",
               "tags": ["工具对比", "选型指南", "最佳实践"],
               "learningObjectives": ["掌握工具对比方法", "学会场景化选型", "建立工具组合策略"]
             }
@@ -182,41 +190,41 @@
           "description": "将AI应用到实际工作场景，提升工作效率",
           "learningGoal": "将AI融入日常工作流程，成为AI时代的效率达人",
           "items": [
-            {
+{
               "id": "ai-for-developers",
-              "title": "第13章 开发编程场景",
+              "title": "第14章 开发编程场景",
               "description": "程序员如何用AI提效：代码生成、重构优化、Bug排查、文档编写全流程",
               "path": "./public/knowledge-base/ai-application/04-applying/01-ai-for-developers.md",
               "tags": ["开发编程", "代码生成", "重构", "Bug排查"],
               "learningObjectives": ["建立AI编程工作流", "掌握代码生成技巧", "提升开发效率"]
             },
-            {
+{
               "id": "ai-for-product",
-              "title": "第14章 产品设计场景",
+              "title": "第15章 产品设计场景",
               "description": "产品经理如何用AI：需求分析、竞品调研、PRD撰写、用户洞察",
               "path": "./public/knowledge-base/ai-application/04-applying/02-ai-for-product.md",
               "tags": ["产品经理", "需求分析", "PRD", "用户洞察"],
               "learningObjectives": ["建立AI产品工作流", "掌握AI辅助产品设计", "提升产品效率"]
             },
-            {
+{
               "id": "ai-for-ui-design",
-              "title": "第15章 UI设计场景",
+              "title": "第16章 UI设计场景",
               "description": "UI设计师如何用AI：设计灵感、界面生成、图标设计、设计规范",
               "path": "./public/knowledge-base/ai-application/04-applying/03-ai-for-ui-design.md",
               "tags": ["UI设计", "设计灵感", "界面生成", "设计规范"],
               "learningObjectives": ["建立AI设计工作流", "掌握AI辅助UI设计", "提升设计效率"]
             },
-            {
+{
               "id": "ai-for-testing",
-              "title": "第16章 软件测试场景",
+              "title": "第17章 软件测试场景",
               "description": "测试工程师如何用AI：用例设计、自动化脚本、缺陷分析、测试报告",
               "path": "./public/knowledge-base/ai-application/04-applying/04-ai-for-testing.md",
               "tags": ["软件测试", "用例设计", "自动化", "缺陷分析"],
               "learningObjectives": ["建立AI测试工作流", "掌握AI辅助测试方法", "提升测试效率"]
             },
-            {
+{
               "id": "ai-for-other-roles",
-              "title": "第17章 其他工作场景",
+              "title": "第18章 其他工作场景",
               "description": "编辑、内容审核、视频制作、市场营销、项目规划、运营、HR、财务等岗位的AI应用",
               "path": "./public/knowledge-base/ai-application/04-applying/05-ai-for-other-roles.md",
               "tags": ["编辑", "内容审核", "视频制作", "市场营销", "项目规划", "跨岗位"],
@@ -231,25 +239,25 @@
           "description": "深入AI世界，持续提升AI能力",
           "learningGoal": "建立个人AI工作流，持续学习和进化",
           "items": [
-            {
+{
               "id": "ai-workflow",
-              "title": "第18章 AI工作流实践",
+              "title": "第19章 AI工作流实践",
               "description": "构建个人AI工作流：编程、写作、学习、研究等场景的最佳实践",
               "path": "./public/knowledge-base/ai-application/05-advanced/01-ai-workflow.md",
               "tags": ["工作流", "最佳实践", "效率提升"],
               "learningObjectives": ["建立个人AI工作流", "掌握多场景实践方法", "持续优化工作流程"]
             },
-            {
+{
               "id": "prompt-engineering",
-              "title": "第19章 Prompt工程进阶",
+              "title": "第20章 Prompt工程进阶",
               "description": "从基础到进阶的Prompt技巧，让AI更懂你的需求",
               "path": "./public/knowledge-base/ai-application/05-advanced/02-prompt-engineering.md",
               "tags": ["Prompt", "提示词", "技巧", "进阶"],
               "learningObjectives": ["掌握Prompt工程技巧", "提升AI交互效果", "写出高质量Prompt"]
             },
-            {
+{
               "id": "continuous-learning",
-              "title": "第20章 持续学习路径",
+              "title": "第21章 持续学习路径",
               "description": "AI领域学习资源、社区、实践项目推荐，保持学习动力",
               "path": "./public/knowledge-base/ai-application/05-advanced/03-continuous-learning.md",
               "tags": ["学习路径", "资源推荐", "社区"],
