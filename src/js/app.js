@@ -385,11 +385,71 @@ const LearningSystem = {
         this.processInternalLinks();
         this.processAnchorLinks();
         this.initInteractiveDemos();
+        this.addNextPageButton(id);
         
         if (searchQuery) {
             setTimeout(() => {
                 this.scrollToSearchResult(searchQuery);
             }, 100);
+        }
+    },
+    
+    addNextPageButton(currentDocId) {
+        const contentBody = document.getElementById('contentBody');
+        const articleContent = contentBody.querySelector('.article-content');
+        
+        if (!articleContent || !this.currentBook) return;
+        
+        const book = this.data.books.find(b => b.id === this.currentBook);
+        if (!book) return;
+        
+        // 找到当前文档在目录中的位置
+        let currentChapterIndex = -1;
+        let currentItemIndex = -1;
+        
+        for (let i = 0; i < book.chapters.length; i++) {
+            const chapter = book.chapters[i];
+            const itemIndex = chapter.items.findIndex(item => item.id === currentDocId);
+            if (itemIndex !== -1) {
+                currentChapterIndex = i;
+                currentItemIndex = itemIndex;
+                break;
+            }
+        }
+        
+        if (currentChapterIndex === -1 || currentItemIndex === -1) return;
+        
+        // 找到下一个文档
+        let nextItem = null;
+        
+        // 先在当前章节找下一个文档
+        if (currentItemIndex < book.chapters[currentChapterIndex].items.length - 1) {
+            nextItem = book.chapters[currentChapterIndex].items[currentItemIndex + 1];
+        } 
+        // 如果是当前章节最后一个文档，找下一个章节的第一个文档
+        else if (currentChapterIndex < book.chapters.length - 1) {
+            const nextChapter = book.chapters[currentChapterIndex + 1];
+            if (nextChapter.items.length > 0) {
+                nextItem = nextChapter.items[0];
+            }
+        }
+        
+        // 如果找到下一个文档，添加下一页按钮
+        if (nextItem) {
+            const nextPageButton = document.createElement('div');
+            nextPageButton.className = 'next-page-button';
+            nextPageButton.innerHTML = `
+                <button class="next-page-btn" data-id="${nextItem.id}" data-path="${nextItem.path}">
+                    下一页：${nextItem.title}
+                </button>
+            `;
+            articleContent.appendChild(nextPageButton);
+            
+            // 添加点击事件
+            nextPageButton.querySelector('.next-page-btn').addEventListener('click', (e) => {
+                const target = e.target;
+                this.loadDocument(target.dataset.id, target.dataset.path);
+            });
         }
     },
     

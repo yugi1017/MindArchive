@@ -1579,3 +1579,38 @@ html, body {
 .demo-text span {
     display: inline-block;
 }
+
+/* ========== Next Page Button ========== */
+.next-page-button {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-color);
+    text-align: right;
+}
+
+.next-page-btn {
+    padding: 12px 24px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.next-page-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.next-page-btn::after {
+    content: '→';
+    font-size: 16px;
+    font-weight: bold;
+}
