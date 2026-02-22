@@ -31,7 +31,8 @@
     {
       "id": "ai-application",
       "title": "AI 应用",
-      "icon": "🤖",
+      "icon": "./public/icons/ai-icon.svg",
+      "iconType": "image",
       "description": "从零开始认识AI，循序渐进理解AI，将AI应用到工作中（2026年2月更新）",
       "author": "个人学习整理",
       "chapters": [

@@ -201,6 +201,13 @@ html, body {
     margin-bottom: 16px;
 }
 
+.book-icon-img {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+    object-fit: contain;
+}
+
 .book-title {
     font-size: 1.25rem;
     font-weight: 600;

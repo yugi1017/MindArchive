@@ -104,14 +104,17 @@ const LearningSystem = {
     renderHomePage() {
         const grid = document.getElementById('booksGrid');
         if (!grid || !this.data) return;
-        
+
         grid.innerHTML = this.data.books.map(book => {
             const chapterCount = book.chapters.length;
             const docCount = book.chapters.reduce((sum, ch) => sum + ch.items.length, 0);
-            
+            const iconHtml = book.iconType === 'image'
+                ? `<img src="${book.icon}" alt="${book.title}" class="book-icon-img" style="width: 48px; height: 48px;">`
+                : `<div class="book-icon">${book.icon}</div>`;
+
             return `
                 <div class="book-card" data-book="${book.id}">
-                    <div class="book-icon">${book.icon}</div>
+                    ${iconHtml}
                     <h3 class="book-title">${book.title}</h3>
                     <p class="book-desc">${book.description}</p>
                     <div class="book-meta">
@@ -133,9 +136,12 @@ const LearningSystem = {
         
         const book = this.data.books.find(b => b.id === this.currentBook);
         if (!book) return;
-        
+
         titleEl.textContent = book.title;
-        currentBookEl.innerHTML = `<span class="book-badge">${book.icon} ${book.title}</span>`;
+        const iconHtml = book.iconType === 'image'
+            ? `<img src="${book.icon}" alt="" class="book-badge-icon" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">`
+            : book.icon;
+        currentBookEl.innerHTML = `<span class="book-badge">${iconHtml} ${book.title}</span>`;
         
         container.innerHTML = book.chapters.map(chapter => `
             <li class="nav-chapter">
@@ -752,6 +758,8 @@ const LearningSystem = {
     },
     
     addRunButtonsToCodeBlocks() {
+        if (this.currentBook !== 'gsap-tutorial') return;
+        
         document.querySelectorAll('.article-content pre code.language-javascript').forEach(codeEl => {
             if (codeEl.closest('.demo-container')) return;
             if (codeEl.closest('.demo-modal-code')) return;
@@ -1124,16 +1132,20 @@ const LearningSystem = {
         const modal = this.createListModal('书籍列表');
         const content = modal.querySelector('.list-modal-content');
         
-        content.innerHTML = this.data.books.map(book => `
+        content.innerHTML = this.data.books.map(book => {
+            const iconHtml = book.iconType === 'image'
+                ? `<img src="${book.icon}" alt="" class="list-icon-img" style="width: 24px; height: 24px;">`
+                : `<span class="list-icon">${book.icon}</span>`;
+            return `
             <div class="list-item book-list-item" data-book="${book.id}">
-                <span class="list-icon">${book.icon}</span>
+                ${iconHtml}
                 <div class="list-info">
                     <div class="list-title">${book.title}</div>
                     <div class="list-desc">${book.description}</div>
                 </div>
                 <span class="list-count">${book.chapters.reduce((sum, ch) => sum + ch.items.length, 0)} 文档</span>
             </div>
-        `).join('');
+        `}).join('');
         
         content.querySelectorAll('.book-list-item').forEach(el => {
             el.addEventListener('click', () => {
@@ -1290,12 +1302,15 @@ const LearningSystem = {
                     });
                 });
                 
+                const iconHtml = book.iconType === 'image'
+                    ? `<img src="${book.icon}" alt="" class="search-icon-img" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 4px;">`
+                    : book.icon;
                 resultsContainer.innerHTML = `
                     <div class="search-section">
                         <div class="search-section-title">📖 当前书籍</div>
                         <div class="search-result-item book-result" data-book="${book.id}">
                             <span class="result-type-badge book-badge">书籍</span>
-                            <div class="search-result-title">${book.icon} ${book.title}</div>
+                            <div class="search-result-title">${iconHtml} ${book.title}</div>
                             <div class="search-result-preview">${book.description}</div>
                         </div>
                     </div>
@@ -1317,17 +1332,21 @@ const LearningSystem = {
         }
         
         const recentBooks = this.data.books.slice(0, 3);
-        
+
         resultsContainer.innerHTML = `
             <div class="search-section">
                 <div class="search-section-title">📚 书籍</div>
-                ${recentBooks.map(book => `
+                ${recentBooks.map(book => {
+                    const iconHtml = book.iconType === 'image'
+                        ? `<img src="${book.icon}" alt="" class="search-icon-img" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 4px;">`
+                        : book.icon;
+                    return `
                     <div class="search-result-item book-result" data-book="${book.id}">
                         <span class="result-type-badge book-badge">书籍</span>
-                        <div class="search-result-title">${book.icon} ${book.title}</div>
+                        <div class="search-result-title">${iconHtml} ${book.title}</div>
                         <div class="search-result-preview">${book.description}</div>
                     </div>
-                `).join('')}
+                `}).join('')}
             </div>
             <div class="search-section">
                 <div class="search-section-title">📄 最近文档</div>
@@ -1455,10 +1474,14 @@ const LearningSystem = {
         
         resultsContainer.innerHTML = allResults.map(item => {
             if (item.type === 'book') {
+                const book = this.data.books.find(b => b.id === item.id);
+                const iconHtml = book && book.iconType === 'image'
+                    ? `<img src="${book.icon}" alt="" class="search-icon-img" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 4px;">`
+                    : item.icon;
                 return `
                     <div class="search-result-item book-result" data-book="${item.id}">
                         <span class="result-type-badge book-badge">书籍</span>
-                        <div class="search-result-title">${this.highlightText(item.icon + ' ' + item.title, query)}</div>
+                        <div class="search-result-title">${iconHtml} ${this.highlightText(item.title, query)}</div>
                         <div class="search-result-preview">${this.highlightText(item.description, query)}</div>
                     </div>
                 `;
